@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="entry">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="core">
+      <UniqueIdentifier>{407fc86f-35b2-4f1f-967b-6b33412ad0a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="windowEx">
+      <UniqueIdentifier>{b1dda049-92f7-4db5-a621-66663452a2f7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="ExplorerNext.cpp">
+      <Filter>entry</Filter>
+    </ClCompile>
+    <ClCompile Include="coreLogic.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="coreRender.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="windowCompositionAttribute.cpp">
+      <Filter>windowEx</Filter>
+    </ClCompile>
+    <ClCompile Include="interface.cpp">
+      <Filter>windowEx</Filter>
+    </ClCompile>
+    <ClCompile Include="registry.cpp">
+      <Filter>windowEx</Filter>
+    </ClCompile>
+    <ClCompile Include="doubleBuffer.cpp">
+      <Filter>windowEx</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="ExplorerNext.h">
+      <Filter>entry</Filter>
+    </ClInclude>
+    <ClInclude Include="coreLogic.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="coreRender.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="windowCompositionAttribute.h">
+      <Filter>windowEx</Filter>
+    </ClInclude>
+    <ClInclude Include="interface.h">
+      <Filter>windowEx</Filter>
+    </ClInclude>
+    <ClInclude Include="registry.h">
+      <Filter>windowEx</Filter>
+    </ClInclude>
+    <ClInclude Include="doubleBuffer.h">
+      <Filter>windowEx</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
