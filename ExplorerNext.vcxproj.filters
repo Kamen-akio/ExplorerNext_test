@@ -5,61 +5,84 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="entry">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="core">
       <UniqueIdentifier>{407fc86f-35b2-4f1f-967b-6b33412ad0a9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="windowEx">
-      <UniqueIdentifier>{b1dda049-92f7-4db5-a621-66663452a2f7}</UniqueIdentifier>
+    <Filter Include="utils">
+      <UniqueIdentifier>{80903aa1-946e-458b-abe4-e21bb56805f8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils\window">
+      <UniqueIdentifier>{fed33bf7-4cfb-4e49-b6f6-ffe9a2fa0438}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils\registry">
+      <UniqueIdentifier>{1a83f026-e4cd-4dbd-aa9e-4a1fc15ad264}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layout">
+      <UniqueIdentifier>{7497e7bc-61b3-4628-b74f-8ae9dd0d3c6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="core\gdiplus_ext">
+      <UniqueIdentifier>{8b062f5f-cf11-46be-aba0-ad3a07fbdfa5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="interface">
+      <UniqueIdentifier>{951f18ce-3135-467c-b756-7a868151ca17}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="utils\com">
+      <UniqueIdentifier>{badeb85c-8633-4c8e-9e27-102385331143}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ExplorerNext.cpp">
-      <Filter>entry</Filter>
-    </ClCompile>
-    <ClCompile Include="coreLogic.cpp">
+    <ClCompile Include="core\process.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="coreRender.cpp">
+    <ClCompile Include="core\render.cpp">
       <Filter>core</Filter>
     </ClCompile>
-    <ClCompile Include="windowCompositionAttribute.cpp">
-      <Filter>windowEx</Filter>
+    <ClCompile Include="core\gdiplus_ext\doubleBuffer.cpp">
+      <Filter>core\gdiplus_ext</Filter>
     </ClCompile>
-    <ClCompile Include="interface.cpp">
-      <Filter>windowEx</Filter>
+    <ClCompile Include="utils\windowCompositionAttribute.cpp">
+      <Filter>utils\window</Filter>
     </ClCompile>
-    <ClCompile Include="registry.cpp">
-      <Filter>windowEx</Filter>
+    <ClCompile Include="utils\registry.cpp">
+      <Filter>utils\registry</Filter>
     </ClCompile>
-    <ClCompile Include="doubleBuffer.cpp">
-      <Filter>windowEx</Filter>
+    <ClCompile Include="utils\interface.cpp">
+      <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="test.cpp">
+      <Filter>layout</Filter>
+    </ClCompile>
+    <ClCompile Include="ExplorerNext.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ExplorerNext.h">
-      <Filter>entry</Filter>
-    </ClInclude>
-    <ClInclude Include="coreLogic.h">
+    <ClInclude Include="core\process.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="coreRender.h">
+    <ClInclude Include="core\render.h">
       <Filter>core</Filter>
     </ClInclude>
-    <ClInclude Include="windowCompositionAttribute.h">
-      <Filter>windowEx</Filter>
+    <ClInclude Include="interface\render.h">
+      <Filter>interface</Filter>
     </ClInclude>
-    <ClInclude Include="interface.h">
-      <Filter>windowEx</Filter>
+    <ClInclude Include="core\gdiplus_ext\doubleBuffer.h">
+      <Filter>core\gdiplus_ext</Filter>
     </ClInclude>
-    <ClInclude Include="registry.h">
-      <Filter>windowEx</Filter>
+    <ClInclude Include="utils\windowCompositionAttribute.h">
+      <Filter>utils\window</Filter>
     </ClInclude>
-    <ClInclude Include="doubleBuffer.h">
-      <Filter>windowEx</Filter>
+    <ClInclude Include="utils\registry.h">
+      <Filter>utils\registry</Filter>
     </ClInclude>
+    <ClInclude Include="utils\interface.h">
+      <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="test.h">
+      <Filter>layout</Filter>
+    </ClInclude>
+    <ClInclude Include="ExplorerNext.h" />
+    <ClInclude Include="general.h">
+      <Filter>interface</Filter>
+    </ClInclude>
+    <ClInclude Include="common.h" />
   </ItemGroup>
 </Project>

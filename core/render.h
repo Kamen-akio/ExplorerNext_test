@@ -1,22 +1,21 @@
 #pragma once
+#include "../common.h"
 
-#define GDIPVER 0x0110
-
-#include <Windows.h>
-#include <dwmapi.h>
-#include <gdiplus.h>
+#include <initguid.h>
 #include <ShObjIdl.h>
+#include <mmdeviceapi.h>
+#include <endpointvolume.h>
 
-#include "doubleBuffer.h"
-
-#pragma comment(lib, "Dwmapi.lib")
-#pragma comment(lib, "Gdiplus.lib")
+#include "../utils/interface.h"
+#include "gdiplus_ext/doubleBuffer.h"
 
 using namespace Gdiplus;
 
 #ifndef _CORE_RENDER_H_
 #define _CORE_RENDER_H_
 
+#define TIMER_GENERAL 0x01
+#define TIMER_RENDERLOOP 0x02
 
 namespace CoreRender {
 void Initialize();
@@ -25,7 +24,7 @@ LRESULT __stdcall CoreRender_WindowProc(HWND hWnd,
                                         UINT uMsg,
                                         WPARAM wParam,
                                         LPARAM lParam);
-bool __stdcall CoreRender_WndProcShouldReturn();
+bool __stdcall CoreRender_IsProcessed();
 }
 
 

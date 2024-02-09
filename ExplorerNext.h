@@ -1,4 +1,4 @@
 #pragma once
 
 #include <Windows.h>
-#include "coreLogic.h"
+#include "core/process.h"
