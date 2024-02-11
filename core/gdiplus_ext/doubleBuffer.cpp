@@ -68,10 +68,6 @@ void Gdiplus::DoubleBuffer::FlushPos(POINT posWnd) {
 
 void Gdiplus::DoubleBuffer::FlushSize(SIZE szWnd) {
   _szWnd = szWnd;
-
-  SelectObject(_hVirtualDC, _hLastVirtualBitmap);
-  DeleteObject(_hVirtualBitmap);
-
   _hLastVirtualBitmap =
       CreateMemoryBitmap(_hVirtualDC, {0, 0, szWnd.cx, szWnd.cy});
   GetObject(_hVirtualDC, sizeof(BITMAP), &_hVirtualBitmap);

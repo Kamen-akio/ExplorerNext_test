@@ -132,25 +132,34 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="core\env.h" />
+    <ClInclude Include="core\logic.h" />
     <ClInclude Include="core\process.h" />
     <ClInclude Include="core\render.h" />
     <ClInclude Include="core\gdiplus_ext\doubleBuffer.h" />
     <ClInclude Include="ExplorerNext.h" />
     <ClInclude Include="general.h" />
     <ClInclude Include="common.h" />
+    <ClInclude Include="utils\com\audio.h" />
+    <ClInclude Include="utils\com\initialize.h" />
     <ClInclude Include="test.h" />
     <ClInclude Include="utils\interface.h" />
+    <ClInclude Include="utils\mutliTree.h" />
     <ClInclude Include="utils\registry.h" />
     <ClInclude Include="interface\render.h" />
     <ClInclude Include="utils\windowCompositionAttribute.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="core\logic.cpp" />
     <ClCompile Include="core\process.cpp" />
     <ClCompile Include="core\render.cpp" />
     <ClCompile Include="core\gdiplus_ext\doubleBuffer.cpp" />
     <ClCompile Include="ExplorerNext.cpp" />
+    <ClCompile Include="utils\com\audio.cpp" />
+    <ClCompile Include="utils\com\initialize.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="utils\interface.cpp" />
+    <ClCompile Include="utils\mutliTree.cpp" />
     <ClCompile Include="utils\registry.cpp" />
     <ClCompile Include="utils\windowCompositionAttribute.cpp" />
   </ItemGroup>

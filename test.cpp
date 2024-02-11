@@ -1,6 +1,6 @@
 #include "test.h"
-
-void TESTRENDER::Render(Gdiplus::Graphics& a) {
+/*
+void TESTRENDER::Layout(Gdiplus::Graphics& a) {
   Gdiplus::Font font(L"Microsoft YaHei", 16);
   Gdiplus::SolidBrush brush(Gdiplus::Color::White);
 
@@ -9,3 +9,4 @@ void TESTRENDER::Render(Gdiplus::Graphics& a) {
   a.DrawString(L"I was rendered", 15, &font, Gdiplus::PointF(100, 100), &brush);
   a.EndContainer(renderContainer);
 };
+*/

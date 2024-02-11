@@ -29,6 +29,9 @@
     <Filter Include="utils\com">
       <UniqueIdentifier>{badeb85c-8633-4c8e-9e27-102385331143}</UniqueIdentifier>
     </Filter>
+    <Filter Include="utils\mutliTree">
+      <UniqueIdentifier>{db5ef497-aee9-49be-b936-3cfbdcdf3307}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="core\process.cpp">
@@ -53,6 +56,18 @@
       <Filter>layout</Filter>
     </ClCompile>
     <ClCompile Include="ExplorerNext.cpp" />
+    <ClCompile Include="utils\com\initialize.cpp">
+      <Filter>utils\com</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\mutliTree.cpp">
+      <Filter>utils\mutliTree</Filter>
+    </ClCompile>
+    <ClCompile Include="core\logic.cpp">
+      <Filter>core</Filter>
+    </ClCompile>
+    <ClCompile Include="utils\com\audio.cpp">
+      <Filter>utils\com</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\process.h">
@@ -84,5 +99,20 @@
       <Filter>interface</Filter>
     </ClInclude>
     <ClInclude Include="common.h" />
+    <ClInclude Include="utils\com\initialize.h">
+      <Filter>utils\com</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\mutliTree.h">
+      <Filter>utils\mutliTree</Filter>
+    </ClInclude>
+    <ClInclude Include="core\logic.h">
+      <Filter>core</Filter>
+    </ClInclude>
+    <ClInclude Include="utils\com\audio.h">
+      <Filter>utils\com</Filter>
+    </ClInclude>
+    <ClInclude Include="core\env.h">
+      <Filter>core</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

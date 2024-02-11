@@ -1,12 +1,18 @@
 #include "process.h"
 
-const auto WND_CLASS = L"explorer_next";
-const auto WND_TITLE = L"test";
+inline const auto WND_CLASS = L"explorer_next";
+inline const auto WND_TITLE = L"test";
 
-LRESULT __stdcall MainWndProc(HWND hWnd,
-                              UINT uMsg,
-                              WPARAM wParam,
-                              LPARAM lParam);
+static void CenterWindow(HWND hWnd, SIZE szWnd) {
+  const SIZE szScreen{GetSystemMetrics(SM_CXSCREEN),
+                      GetSystemMetrics(SM_CYSCREEN)};
+
+  SetWindowPos(hWnd, NULL, (szScreen.cx - szWnd.cx) * 0.5,
+               (szScreen.cy - szWnd.cy) * 0.5, szWnd.cx, szWnd.cy,
+               SWP_NOOWNERZORDER | SWP_NOZORDER);
+}
+
+LRESULT __stdcall WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam);
 
 HWND InitMainWindow(HINSTANCE hInst, PWSTR lpCmdLine, int nCmdShow) {
   HWND hWnd{};
@@ -15,7 +21,7 @@ HWND InitMainWindow(HINSTANCE hInst, PWSTR lpCmdLine, int nCmdShow) {
   wcex.cbSize = sizeof(WNDCLASSEXW);
   wcex.cbClsExtra = CS_OWNDC;
   wcex.hInstance = hInst;
-  wcex.lpfnWndProc = MainWndProc;
+  wcex.lpfnWndProc = WndProc;
   wcex.lpszClassName = WND_CLASS;
 
   if (RegisterClassEx(&wcex) == NULL)
@@ -23,20 +29,17 @@ HWND InitMainWindow(HINSTANCE hInst, PWSTR lpCmdLine, int nCmdShow) {
 
   CoreRender::Initialize();
 
-  hWnd = CreateWindowEx(WS_EX_LAYERED, WND_CLASS, WND_TITLE,
-                        WS_VISIBLE | WS_POPUP, (1920 - 800) / 2,
-                        (1080 - 600) / 2, 800, 600, NULL, NULL, hInst, NULL);
+  hWnd =
+      CreateWindowEx(WS_EX_LAYERED, WND_CLASS, WND_TITLE, WS_VISIBLE | WS_POPUP,
+                     0, 0, 800, 600, NULL, NULL, hInst, NULL);
 
+  CenterWindow(hWnd, {800, 600});
   ShowWindow(hWnd, nCmdShow);
 
   return hWnd;
 }
 
-LRESULT __stdcall MainWndProc(HWND hWnd,
-                              UINT uMsg,
-                              WPARAM wParam,
-                              LPARAM lParam) {
-
+LRESULT __stdcall WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
   if (uMsg == WM_CLOSE) {
     CoreRender::UnInitialize();
     DestroyWindow(hWnd);
@@ -48,8 +51,8 @@ LRESULT __stdcall MainWndProc(HWND hWnd,
     return NULL;
   }
 
-  auto result = CoreRender::CoreRender_WindowProc(hWnd, uMsg, wParam, lParam);
-  if (CoreRender::CoreRender_IsProcessed()) {
+  auto result = CoreRender::WindowProc(hWnd, uMsg, wParam, lParam);
+  if (CoreRender::IsProcessed()) {
     return result;
   }
 

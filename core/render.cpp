@@ -1,54 +1,104 @@
 #include "render.h"
-#include "../test.h"
 
-HWND hRenderWindow;
-ULONG_PTR gdipToken{};
-DoubleBuffer* RenderScreen;
+// Gdiplus Render
 
-ITaskbarList3* pTaskbarList{};
+static ULONG_PTR gdiplusToken{};
 
-IMMDeviceEnumerator* pAudioDeviceEnumerator{};
-IMMDevice* pAudioEndpoint{};
-IAudioMeterInformation* pAudioMeterInfo{};
+static HWND hRenderWindow;
+static MutliTree* RenderTree;
+static DoubleBuffer* RenderContext;
 
-TESTRENDER* testtest{};
+// Com
 
-bool bProcReturn = false;
-static void WndProcReturn() {
+static ITaskbarList3* pTaskbarList{};
+
+static bool bProcReturn = false;
+inline static void WndProcReturn() {
   bProcReturn = true;
+};
+
+static void WindowInitialize(HWND hWnd) {
+#if defined(USE_BLUR) or defined(USE_BLUR_AUTO)
+
+  EnableArcylic(hWnd);
+
+#endif  // defined(USE_BLUR) or defined(USE_BLUR_AUTO)
+
+  hRenderWindow = hWnd;
+
+  pTaskbarList->HrInit();
+  pTaskbarList->RegisterTab(hWnd, hWnd);
+
+  RenderTree = new MutliTree();
+  RenderContext = new DoubleBuffer(hWnd);
+}
+
+LRESULT __stdcall CoreRender::WindowProc(HWND hWnd,
+                                         UINT uMsg,
+                                         WPARAM wParam,
+                                         LPARAM lParam) {
+  static POINT ptMouse{};
+
+  if (uMsg == WM_CREATE) {
+    WindowInitialize(hWnd);
+  }
+
+  // Handle window rect is changed.
+
+  if (uMsg == WM_MOVE) {
+    RenderContext->FlushPos({LOWORD(lParam), HIWORD(lParam)});
+  }
+
+  if (uMsg == WM_SIZE) {
+    RenderContext->FlushSize({LOWORD(lParam), HIWORD(lParam)});
+  }
+
+  // Skip the WM ERASEBKGND message.
+
+  if (uMsg == WM_ERASEBKGND) {
+    WndProcReturn();
+  }
+
+  // Respond to system theme changes
+
+#ifdef USE_BLUR_AUTO
+
+  if (uMsg == WM_DWMCOLORIZATIONCOLORCHANGED) {
+    EnableArcylic(hWnd);
+    WndProcReturn();
+  }
+
+#endif  // USE_BLUR_AUTO
+
+  if (uMsg == WM_MOUSEMOVE) {
+    ptMouse = {LOWORD(lParam), HIWORD(lParam)};
+  }
+
+  auto result = CoreLogic::WindowProc(hWnd, uMsg, wParam, lParam);
+  if (CoreLogic::IsProcessed()) {
+    WndProcReturn();
+    return result;
+  }
+
+  return NULL;
 }
 
 void CoreRender::Initialize() {
   GdiplusStartupInput gdiplusStartupInput{};
-  GdiplusStartup(&gdipToken, &gdiplusStartupInput, nullptr);
+  GdiplusStartup(&gdiplusToken, &gdiplusStartupInput, nullptr);
 
   if (CoInitialize(0) != S_OK)
     return;
 
   // Taskbar
 
-  if (CoCreateInstance(CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER,
+  if (CoCreateInstance((IID)CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER,
                        IID_ITaskbarList3, (void**)&pTaskbarList))
-    return;
-
-  // Audio
-
-  if (CoCreateInstance(__uuidof(MMDeviceEnumerator), NULL, CLSCTX_INPROC_SERVER,
-                       __uuidof(IMMDeviceEnumerator),
-                       (void**)&pAudioDeviceEnumerator))
-    return;
-
-  if (pAudioDeviceEnumerator->GetDefaultAudioEndpoint(eRender, eConsole,
-                                                      &pAudioEndpoint))
-    return;
-
-  if (pAudioEndpoint->Activate(__uuidof(IAudioMeterInformation), CLSCTX_ALL,
-                               NULL, (void**)&pAudioMeterInfo))
     return;
 }
 
 void CoreRender::UnInitialize() {
-  GdiplusShutdown(gdipToken);
+  GdiplusShutdown(gdiplusToken);
 
   pTaskbarList->UnregisterTab(hRenderWindow);
   if (pTaskbarList != nullptr) {
@@ -56,130 +106,14 @@ void CoreRender::UnInitialize() {
     pTaskbarList = nullptr;
   }
 
-  if (pAudioDeviceEnumerator != nullptr) {
-    pAudioDeviceEnumerator->Release();
-    pAudioDeviceEnumerator = nullptr;
-  }
-
-  if (pAudioEndpoint != nullptr) {
-    pAudioEndpoint->Release();
-    pAudioEndpoint = nullptr;
-  }
-
-  if (pAudioMeterInfo != nullptr) {
-    pAudioMeterInfo->Release();
-    pAudioMeterInfo = nullptr;
-  }
   CoUninitialize();
 }
 
-bool _stdcall CoreRender::CoreRender_IsProcessed() {
+bool _stdcall CoreRender::IsProcessed() {
   if (bProcReturn) {
     bProcReturn = false;
     return true;
   }
 
   return false;
-}
-
-static void OnWindowCreate(HWND hWnd) {
-  EnableArcylic(hWnd);
-  hRenderWindow = hWnd;
-
-  pTaskbarList->HrInit();
-  pTaskbarList->RegisterTab(hWnd, hWnd);
-
-  RenderScreen = new DoubleBuffer(hWnd);
-
-  SetTimer(hWnd, TIMER_GENERAL, 1000, nullptr);
-  SetTimer(hWnd, TIMER_RENDERLOOP, USER_TIMER_MINIMUM, nullptr);
-
-  // test //
-  testtest = new TESTRENDER(hWnd, RenderScreen);
-}
-
-static void PaintFps(Gdiplus::Graphics* grap, short fps) {
-  Font font(L"Segoe UI", 16);
-  SolidBrush brush(Color::White);
-
-  auto output = std::to_wstring(fps);
-  output = (L"Fps: " + output + L"\0");
-  grap->DrawString(output.c_str(), output.length(), &font, PointF(0, 0),
-                   &brush);
-}
-static void PaintFun(Gdiplus::Graphics* grap) {
-  float volume{};
-  pAudioMeterInfo->GetPeakValue(&volume);
-
-  static float lastWidth = 0;
-  lastWidth = lastWidth + (volume * volume - lastWidth) * 0.1;
-
-  SolidBrush brush(Color(255, 255, 255 * volume));
-  grap->FillRectangle(&brush, 0, 250, (int)(800 * lastWidth), 16);
-
-  Font font(L"Segoe UI", 16);
-  brush.SetColor(Color::AliceBlue);
-  auto output = L"Volume: " + std::to_wstring(std::floor(volume * 100)) + L"%";
-  grap->DrawString(output.c_str(), output.length(), &font, PointF(0, 210),
-                   &brush);
-};
-
-LRESULT __stdcall CoreRender::CoreRender_WindowProc(HWND hWnd,
-                                                    UINT uMsg,
-                                                    WPARAM wParam,
-                                                    LPARAM lParam) {
-  static bool bInit = false;
-  static short nFps = 0;
-  static short nLastFps = 0;
-
-  static POINT ptMouse{};
-
-  if (uMsg == WM_CREATE) {
-    OnWindowCreate(hWnd);
-    bInit = true;
-  }
-
-  if (uMsg == WM_MOVE) {
-    RenderScreen->FlushPos({LOWORD(lParam), HIWORD(lParam)});
-  }
-
-  if (uMsg == WM_SIZE) {
-    RenderScreen->FlushSize({LOWORD(lParam), HIWORD(lParam)});
-  }
-
-  if (uMsg == WM_ERASEBKGND) {
-    WndProcReturn();
-  }
-
-  if (uMsg == WM_DWMCOLORIZATIONCOLORCHANGED) {
-    EnableArcylic(hWnd);
-    WndProcReturn();
-  }
-
-  if (uMsg == WM_TIMER) {
-    auto grap = Gdiplus::Graphics(RenderScreen->GetVirtualDC());
-    grap.SetSmoothingMode(SmoothingModeHighQuality);
-
-    grap.Clear(Color(11, 55, 11, 173));
-
-    if (wParam == TIMER_GENERAL) {
-      nLastFps = nFps;
-      nFps = 0;
-    }
-    if (wParam == TIMER_RENDERLOOP) {
-      nFps++;
-
-      PaintFps(&grap, nLastFps);
-      PaintFun(&grap);
-      testtest->Render(grap);
-
-      RenderScreen->Flush();
-    }
-  }
-
-  if (uMsg == WM_MOUSEMOVE) {
-    ptMouse = {LOWORD(lParam), HIWORD(lParam)};
-  }
-
-  return NULL;
 }
