@@ -92,7 +92,7 @@ void CoreRender::Initialize() {
 
   // Taskbar
 
-  if (CoCreateInstance((IID)CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER,
+  if (CoCreateInstance((const IID)CLSID_TaskbarList, 0, CLSCTX_INPROC_SERVER,
                        IID_ITaskbarList3, (void**)&pTaskbarList))
     return;
 }

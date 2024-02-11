@@ -14,11 +14,13 @@ struct Node {
 class MutliTree {
  public:
   MutliTree();
+  MutliTree(Node* root);
   ~MutliTree();
 
   void SetChild(void*, void*);
   void DeleteNode(void*);
   std::vector<void*> GetChildren(void*);
+  Node* GetRoot() const { return ROOT_NODE; };
 
  private:
   Node* ROOT_NODE = nullptr;

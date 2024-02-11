@@ -155,6 +155,7 @@
     <ClCompile Include="core\render.cpp" />
     <ClCompile Include="core\gdiplus_ext\doubleBuffer.cpp" />
     <ClCompile Include="ExplorerNext.cpp" />
+    <ClCompile Include="layout\default.cpp" />
     <ClCompile Include="utils\com\audio.cpp" />
     <ClCompile Include="utils\com\initialize.cpp" />
     <ClCompile Include="test.cpp" />

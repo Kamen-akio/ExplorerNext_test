@@ -68,6 +68,7 @@
     <ClCompile Include="utils\com\audio.cpp">
       <Filter>utils\com</Filter>
     </ClCompile>
+    <ClCompile Include="layout\default.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="core\process.h">

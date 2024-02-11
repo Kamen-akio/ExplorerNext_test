@@ -25,13 +25,17 @@ static void _Delete(Node* currNode, void* target) {
     return;
   }
 
-  if (currNode->childNode && currNode->childNode->data == target)
+  if (currNode->childNode && currNode->childNode->data == target) {
+    delete currNode->childNode->data;
     currNode->childNode = currNode->childNode->nextNode;
+  }
 
-  _Delete(currNode->nextNode, target);
+  _Delete(currNode->childNode, target);
 
-  if (currNode->nextNode && currNode->nextNode->data == target)
+  if (currNode->nextNode && currNode->nextNode->data == target) {
+    delete currNode->nextNode->nextNode;
     currNode->nextNode = currNode->nextNode->nextNode;
+  }
 
   _Delete(currNode->nextNode, target);
 }
@@ -79,6 +83,17 @@ static Node* _Find(Node* currNode, void* target) {
   return _Find(currNode->nextNode, target);
 }
 
+MutliTree::MutliTree() {
+  Node* ROOT = new Node;
+  ROOT->data = __NODE_ROOT_;
+  ROOT->childNode = ROOT->nextNode = nullptr;
+
+  ROOT_NODE = ROOT;
+};
+
+MutliTree::MutliTree(Node* root) {
+  ROOT_NODE = root;
+}
 
 MutliTree::MutliTree() {
   Node* ROOT = new Node;
